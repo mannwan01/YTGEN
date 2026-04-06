@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Title & Description Generator 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --accent: #ff4d6d;
+    --accent2: #7b5ea7;
+    --accent3: #00d4aa;
+    --text: #f0f0f5;
+    --text2: #9090a8;
+    --text3: #5a5a72;
+    --red: #ff4d6d;
+    --purple: #7b5ea7;
+    --teal: #00d4aa;
+    --yellow: #ffd166;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grain + mesh */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(123,94,167,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255,77,109,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0,212,170,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,77,109,0.12);
+    border: 1px solid rgba(255,77,109,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--red);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+  }
+
+  .logo-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s ease infinite;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--red), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Main card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.2s; }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Form elements */
+  .field { margin-bottom: 1.25rem; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 0.5rem;
+  }
+
+  .required { color: var(--red); margin-left: 2px; }
+
+  textarea, input, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: none;
+  }
+
+  textarea:focus, input:focus, select:focus {
+    border-color: rgba(123,94,167,0.5);
+    box-shadow: 0 0 0 3px rgba(123,94,167,0.1);
+  }
+
+  textarea::placeholder, input::placeholder {
+    color: var(--text3);
+  }
+
+  select option { background: #1a1a26; }
+
+  #scriptInput {
+    min-height: 180px;
+    line-height: 1.7;
+  }
+
+  .char-count {
+    font-size: 11px;
+    color: var(--text3);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* Options grid */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Toggle chips */
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.5rem;
+  }
+
+  .chip {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .chip:hover { border-color: var(--purple); color: var(--text); }
+
+  .chip.active {
+    background: rgba(123,94,167,0.2);
+    border-color: var(--purple);
+    color: #c4b0e0;
+  }
+
+  /* Generate button */
+  .btn-wrap {
+    text-align: center;
+    margin-top: 1.75rem;
+  }
+
+  .btn-generate {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--red), var(--purple));
+    border: none;
+    border-radius: 14px;
+    padding: 1rem 2.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(255,77,109,0.3);
+    letter-spacing: 0.02em;
+  }
+
+  .btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(255,77,109,0.4);
+  }
+
+  .btn-generate:active { transform: translateY(0); }
+
+  .btn-generate:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-icon { font-size: 18px; }
+
+  /* Loading */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 2.5rem;
+  }
+
+  .loading.show { display: block; }
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  .loading-text {
+    font-size: 14px;
+    color: var(--text2);
+  }
+
+  .loading-step {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    animation: fadeInOut 2s ease infinite;
+  }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; animation: fadeUp 0.5s ease both; }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .results-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .badge-new {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(0,212,170,0.15);
+    color: var(--teal);
+    border: 1px solid rgba(0,212,170,0.25);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  /* Result items */
+  .result-set {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .result-set:hover { border-color: var(--border2); }
+
+  .result-set-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+
+  .copy-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+  }
+
+  .copy-btn.copied {
+    background: rgba(0,212,170,0.15);
+    border-color: rgba(0,212,170,0.3);
+    color: var(--teal);
+  }
+
+  .result-body { padding: 1.25rem; }
+
+  .result-section { margin-bottom: 1.25rem; }
+  .result-section:last-child { margin-bottom: 0; }
+
+  .result-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .label-title { color: var(--red); }
+  .label-desc { color: var(--purple); }
+
+  .result-title-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .char-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    margin-top: 6px;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .char-ok { background: rgba(0,212,170,0.1); color: var(--teal); }
+  .char-warn { background: rgba(255,209,102,0.1); color: var(--yellow); }
+  .char-bad { background: rgba(255,77,109,0.1); color: var(--red); }
+
+  .result-desc-text {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.75;
+    white-space: pre-wrap;
+  }
+
+  .result-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+  }
+
+  /* Analysis bar */
+  .analysis-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .analysis-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .analysis-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .analysis-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .dot-ok { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+  .dot-warn { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); }
+  .dot-bad { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+
+  /* Regenerate */
+  .btn-regen {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 0.7rem 1.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .btn-regen:hover {
+    border-color: var(--purple);
+    color: var(--text);
+    background: rgba(123,94,167,0.08);
+  }
+
+  .regen-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  /* Error */
+  .error-box {
+    background: rgba(255,77,109,0.1);
+    border: 1px solid rgba(255,77,109,0.25);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+    color: #ff8fa3;
+    display: none;
+  }
+
+  .error-box.show { display: block; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-badge">
+      <div class="logo-dot"></div>
+      AI-Powered YouTube Algorithm Intelligence
+    </div>
+    <h1>Title & Description<br><span>Generator</span></h1>
+    <p class="subtitle" style="color: #ffffff;">
+  Instantly generate SEO-optimized, high-CTR titles & descriptions with smart AI insights.
+</p>
+
+    <div style="margin-top:15px;">
+  <button id="loginBtn" onclick="googleLogin()" style="padding:8px 16px;border-radius:8px;border:none;background:#fff;color:#000;font-weight:600;cursor:pointer;">
+    Login with Google
+  </button>
+
+  <div id="userInfo" style="display:none;align-items:center;gap:10px;justify-content:center;">
+    <img id="userPic" style="width:32px;height:32px;border-radius:50%;">
+    <span id="userName"></span>
+    <button onclick="logout()" style="padding:5px 10px;border-radius:6px;border:none;background:#ff4d6d;color:#fff;cursor:pointer;">
+      Logout
+    </button>
+  </div>
+</div>
+  </div>
+
+  <!-- Input Card -->
+  <div class="card">
+    <div class="card-label">📝 Script Input</div>
+
+    <div class="field">
+      <label>Video Script ya Summary <span class="required">*</span></label>
+      <textarea id="scriptInput" oninput="updateCharCount()"></textarea>
+      <div class="char-count"><span id="charCount">0</span> characters</div>
+    </div>
+
+    <div class="options-grid">
+      <div class="field">
+        <label>Video Niche / Category</label>
+        <select id="niche">
+          <option value="motivational">Motivational / Self-help</option>
+          <option value="educational">Educational / Tutorial</option>
+          <option value="finance">Finance / Business</option>
+          <option value="tech">Tech / Gaming</option>
+          <option value="lifestyle">Lifestyle / Vlog</option>
+          <option value="health">Health / Fitness</option>
+          <option value="news">News / Current Affairs</option>
+          <option value="entertainment">Entertainment / Comedy</option>
+          <option value="spiritual">Spiritual / Religious</option>
+          <option value="career">Career / Jobs</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Target Language</label>
+        <select id="lang" onchange="updatePlaceholder()">
+          <option value="Hindi">Hindi (हिंदी)</option>
+          <option value="Hinglish">Hinglish (Hindi + English mix)</option>
+          <option value="English">English</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Title Style — Which format do you want?</label>
+      <div class="chip-group" id="titleStyle">
+        <div class="chip active" data-val="number">🔢 Number list (5 tips...)</div>
+        <div class="chip" data-val="question">❓ Question format</div>
+        <div class="chip" data-val="howto">🎯 How-to / Tutorial</div>
+        <div class="chip" data-val="secret">🤫 Secret / Reveal</div>
+        <div class="chip" data-val="story">📖 Story / Experience</div>
+        <div class="chip" data-val="shocking">⚡ Shocking / Bold claim</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>How many variations do you want?</label>
+      <div class="chip-group" id="variations">
+        <div class="chip" data-val="1">1 set</div>
+        <div class="chip active" data-val="3">3 sets</div>
+        <div class="chip" data-val="5">5 sets</div>
+      </div>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn-generate" id="generateBtn" onclick="generate()" disabled>
+        <span class="btn-icon">⚡</span>
+        GENERATE
+      </button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">2026 Algorithm rules apply ho rahe hain...</div>
+    <div class="loading-step" id="loadingStep">Script analyze ho rahi hai</div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-header">
+      <div class="results-title">Generated Results</div>
+      <div class="badge-new">✓ 2026 Algorithm Ready</div>
+    </div>
+    <div id="resultsContent"></div>
+    <div class="regen-row">
+      <button class="btn-regen" onclick="generate()">🔄 Regenerate</button>
+      <button class="btn-regen" onclick="copyAll()">📋 Sab copy karo</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Language-specific placeholders for the script textarea
+const placeholders = {
+  'Hindi': `यहाँ अपनी स्क्रिप्ट पेस्ट करें या वीडियो का सारांश लिखें...
+
+उदाहरण:
+इस वीडियो में मैं बताऊंगा कि सुबह 5 बजे उठने से ज़िंदगी कैसे बदल जाती है। मैं 3 मुख्य आदतें शेयर करूंगा जो सफल लोग फॉलो करते हैं। सुबह की दिनचर्या का महत्व, ध्यान कैसे बढ़ाएं, और रात की नींद को सुबह के लिए कैसे तैयार करें...`,
+
+  'Hinglish': `Yahan apni script paste karo ya video ka summary likho...
+
+Example:
+Is video mein main bataunga ki subah 5 baje uthne se zindagi kaise badal jaati hai. Main 3 main habits share karunga jo successful log follow karte hain. Morning routine ka importance, focus kaise badhao, aur raat ki neend kaise set karo morning ke liye...`,
+
+  'English': `Paste your script here or write a summary of your video...
+
+Example:
+In this video, I'll explain how waking up at 5 AM can transform your life. I'll share 3 key habits that successful people follow every day. We'll cover the importance of a morning routine, how to improve your focus, and how to set up your night routine for a better morning...`,
+
+  'Marathi': `येथे तुमची स्क्रिप्ट पेस्ट करा किंवा व्हिडिओचा सारांश लिहा...
+
+उदाहरण:
+या व्हिडिओमध्ये मी सांगणार आहे की सकाळी ५ वाजता उठण्याने आयुष्य कसे बदलते. यशस्वी लोक फॉलो करतात अशा ३ मुख्य सवयी मी शेअर करणार आहे. सकाळच्या दिनचर्येचे महत्त्व, एकाग्रता कशी वाढवायची, आणि रात्रीची झोप सकाळसाठी कशी तयार करायची...`,
+
+  'Bengali': `এখানে আপনার স্ক্রিপ্ট পেস্ট করুন বা ভিডিওর সারসংক্ষেপ লিখুন...
+
+উদাহরণ:
+এই ভিডিওতে আমি বলব কীভাবে সকাল ৫টায় ঘুম থেকে উঠলে জীবন বদলে যায়। আমি ৩টি মূল অভ্যাস শেয়ার করব যা সফল মানুষেরা প্রতিদিন অনুসরণ করে। সকালের রুটিনের গুরুত্ব, মনোযোগ কীভাবে বাড়ানো যায় এবং রাতের ঘুম কীভাবে সকালের জন্য প্রস্তুত করতে হয়...`,
+
+  'Tamil': `இங்கே உங்கள் ஸ்கிரிப்டை ஒட்டவும் அல்லது வீடியோவின் சுருக்கத்தை எழுதவும்...
+
+எடுத்துக்காட்டு:
+இந்த வீடியோவில் காலை 5 மணிக்கு எழுவது எப்படி வாழ்க்கையை மாற்றும் என்று விளக்குவேன். வெற்றிகரமான மக்கள் பின்பற்றும் 3 முக்கிய பழக்கங்களை பகிர்வேன். காலை வழக்கத்தின் முக்கியத்துவம், கவனத்தை எப்படி அதிகரிக்கலாம், மற்றும் இரவு தூக்கத்தை காலைக்கு எப்படி தயாரிப்பது...`,
+
+  'Telugu': `ఇక్కడ మీ స్క్రిప్ట్ పేస్ట్ చేయండి లేదా వీడియో సారాంశం రాయండి...
+
+ఉదాహరణ:
+ఈ వీడియోలో తెల్లవారు 5 గంటలకు లేవడం వల్ల జీవితం ఎలా మారుతుందో వివరిస్తాను. విజయవంతమైన వ్యక్తులు అనుసరించే 3 ముఖ్యమైన అలవాట్లు పంచుకుంటాను. ఉదయపు దినచర్య యొక్క ప్రాముఖ్యత, దృష్టిని ఎలా పెంచుకోవాలి, మరియు ఉదయం కోసం రాత్రి నిద్రను ఎలా సెట్ చేసుకోవాలి...`
+};
+
+function updatePlaceholder() {
+  const lang = document.getElementById('lang').value;
+  document.getElementById('scriptInput').placeholder = placeholders[lang] || placeholders['English'];
+}
+
+// Chip selection logic
+document.querySelectorAll('.chip-group').forEach(group => {
+  const isMulti = group.id === 'titleStyle';
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (!isMulti) {
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      } else {
+        chip.classList.toggle('active');
+        if (!group.querySelector('.chip.active')) chip.classList.add('active');
+      }
+    });
+  });
+});
+
+function updateCharCount() {
+  const v = document.getElementById('scriptInput').value;
+  document.getElementById('charCount').textContent = v.length;
+}
+
+// Init placeholder on page load
+updatePlaceholder();
+
+function getSelected(groupId) {
+  return [...document.querySelectorAll(`#${groupId} .chip.active`)].map(c => c.dataset.val);
+}
+
+const steps = [
+  'Script analyze ho rahi hai...',
+  'Keywords extract ho rahe hain...',
+  '2026 rules apply ho rahe hain...',
+  'CTR optimization check ho raha hai...',
+  'Title + Description generate ho raha hai...'
+];
+
+let stepIdx = 0, stepTimer;
+
+function startSteps() {
+  stepIdx = 0;
+  document.getElementById('loadingStep').textContent = steps[0];
+  stepTimer = setInterval(() => {
+    stepIdx = (stepIdx + 1) % steps.length;
+    document.getElementById('loadingStep').textContent = steps[stepIdx];
+  }, 1800);
+}
+
+function stopSteps() { clearInterval(stepTimer); }
+
+async function generate() {
+  const script = document.getElementById('scriptInput').value.trim();
+  const lang = document.getElementById('lang').value;
+
+  // Language-specific error messages
+  const errorMsgs = {
+    'Hindi':    'कृपया अपनी स्क्रिप्ट या सारांश दर्ज करें (कम से कम 30 अक्षर)।',
+    'Hinglish': 'Please apni script ya summary daalo (kam se kam 30 characters).',
+    'English':  'Please enter your script or summary (minimum 30 characters).',
+    'Marathi':  'कृपया तुमची स्क्रिप्ट किंवा सारांश टाका (किमान 30 अक्षरे).',
+    'Bengali':  'অনুগ্রহ করে আপনার স্ক্রিপ্ট বা সারাংশ লিখুন (ন্যূনতম ৩০ অক্ষর)।',
+    'Tamil':    'தயவுசெய்து உங்கள் ஸ்கிரிப்ட் அல்லது சுருக்கத்தை உள்ளிடவும் (குறைந்தது 30 எழுத்துகள்).',
+    'Telugu':   'దయచేసి మీ స్క్రిప్ట్ లేదా సారాంశం నమోదు చేయండి (కనీసం 30 అక్షరాలు).'
+  };
+  const apiErrorMsgs = {
+    'Hindi':    'त्रुटि: कुछ गड़बड़ हुई। कृपया दोबारा कोशिश करें।',
+    'Hinglish': 'Error: Kuch gadbad hui. Please dobara try karo.',
+    'English':  'Error: Something went wrong. Please try again.',
+    'Marathi':  'त्रुटी: काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा.',
+    'Bengali':  'ত্রুটি: কিছু ভুল হয়েছে। আবার চেষ্টা করুন।',
+    'Tamil':    'பிழை: ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.',
+    'Telugu':   'లోపం: ఏదో తప్పు జరిగింది. దయచేసి మళ్ళీ ప్రయత్నించండి.'
+  };
+
+  if (!script || script.length < 30) {
+    showError(errorMsgs[lang] || errorMsgs['English']);
+    return;
+  }
+
+  hideError();
+  const niche = document.getElementById('niche').value;
+  const styles = getSelected('titleStyle');
+  const varCount = getSelected('variations')[0] || '3';
+
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('results').classList.remove('show');
+  startSteps();
+
+  const systemPrompt = `You are a YouTube SEO expert who specializes in the 2026 YouTube algorithm. You generate highly optimized video titles and descriptions following these EXACT rules:
+
+TITLE RULES (2026 Algorithm):
+1. Character limit: 100 max, but ideal is 50-70 characters
+2. Mobile cutoff: ~50 characters — most important content must be in first 50 chars
+3. Primary keyword: Must appear in first 40 characters
+4. Max keywords: 1 primary keyword, maximum 2 secondary
+5. NO keyword stuffing — algorithm uses NLP and semantic understanding
+6. 60/40 rule: 60% keyword + 40% curiosity/benefit
+7. Use specific numbers (odd numbers 3,5,7 perform best)
+8. Use power words: Proven, Secret, Ultimate, Surprising, Finally, Actually works
+9. Parenthetical format at end boosts CTR: (Step-by-Step), [2026 Guide], (Case Study)
+10. NO ALL CAPS, no misleading clickbait — bounce rate destroys ranking
+11. Title must accurately match video content (algorithm cross-checks via NLP + captions)
+
+DESCRIPTION RULES (2026 Algorithm):
+1. Max: 5000 characters, ideal: 200-300 words (250+ words is best)
+2. Critical zone: First 157 characters (shown before "Show more") — MUST include primary keyword + hook
+3. Primary keyword: Must appear in FIRST 25 WORDS
+4. Keyword frequency: 2-4 times naturally throughout, NO stuffing
+5. Structure (Mini-Blog format — 3-sentence rule is DEAD):
+   - Line 1-2 (Hook + Primary keyword): What viewer will get
+   - Body (200 words): Video summary, secondary keywords, LSI keywords naturally woven
+   - Timestamps: Add every 2-3 minutes — activates Google "Key Moments" = 3-4x more SERP space
+   - Links & CTA section at end
+6. Hashtags: Add MINIMUM 10 relevant hashtags at the very end (mix of broad + niche-specific tags)
+7. NO exact duplication between title and description first line
+8. Use keyword variations and related terms in body
+
+OUTPUT FORMAT — You MUST respond in this EXACT JSON format only, no extra text:
+{
+  "sets": [
+    {
+      "title": "exact title here",
+      "titleChars": 45,
+      "keywordPosition": "first 30 chars",
+      "titleAnalysis": ["Keyword in first 40 chars ✓", "Number used ✓", "60/40 rule applied ✓"],
+      "description": "full description here with timestamps and hashtags",
+      "descWordCount": 280,
+      "primaryKeyword": "main keyword identified"
+    }
+  ]
+}`;
+
+  const userPrompt = `Generate ${varCount} YouTube title + description set(s) for this video script:
+
+SCRIPT/SUMMARY:
+${script}
+
+NICHE: ${niche}
+LANGUAGE: ${lang}
+PREFERRED TITLE STYLES: ${styles.join(', ')}
+
+Generate exactly ${varCount} different variation(s). Each must:
+- Use a DIFFERENT title style/angle
+- Follow ALL 2026 algorithm rules strictly
+- Be in ${lang} language
+- Be genuinely optimized for the ${niche} niche
+
+Include realistic timestamps in description (estimate based on script content).
+Make descriptions feel human and authentic, not AI-generated.
+IMPORTANT: Include MINIMUM 10 hashtags at the end of each description — mix broad and niche-specific tags.`;
+
+ try {
+  const res = await fetch("/api/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      script: script,
+    }),
+  });
+
+  const data = await res.json();
+  console.log("API Response:", data);
+
+  stopSteps();
+
+  if (!res.ok || !data.sets) {
+    throw new Error(data.error || "API error");
+  }
+
+  renderResults(data.sets);
+
+} catch (err) {
+  stopSteps();
+  showError("Error: " + err.message);
+} finally {
+  document.getElementById('loading').classList.remove('show');
+  document.getElementById('generateBtn').disabled = false;
+}
+
+}
+function charClass(n) {
+  if (n <= 60) return 'char-ok';
+  if (n <= 70) return 'char-warn';
+  return 'char-bad';
+}
+
+function renderResults(sets) {
+  const container = document.getElementById('resultsContent');
+  container.innerHTML = '';
+
+  sets.forEach((set, i) => {
+    const titleLen = (set.title || '').length;
+    const descWords = set.descWordCount || (set.description || '').split(/\s+/).length;
+    const cls = charClass(titleLen);
+
+    const analysis = (set.titleAnalysis || []).map(a => {
+      const isOk = a.includes('✓');
+      return `<div class="analysis-item"><div class="${isOk ? 'dot-ok' : 'dot-warn'}"></div>${a}</div>`;
+    }).join('');
+
+    const html = `
+    <div class="result-set" id="set-${i}">
+      <div class="result-set-header">
+        <div class="result-number">VARIATION ${i+1} ${set.primaryKeyword ? '· ' + set.primaryKeyword : ''}</div>
+        <button class="copy-btn" onclick="copySet(${i})">Copy all</button>
+      </div>
+      <div class="result-body">
+        <div class="result-section">
+          <div class="result-section-label label-title">📌 Title</div>
+          <div class="result-title-text">${escHtml(set.title || '')}</div>
+          <div class="char-indicator ${cls}">
+            ${titleLen} chars ${titleLen <= 60 ? '· Mobile safe ✓' : titleLen <= 70 ? '· Borderline ⚠' : '· Too long ✗'}
+          </div>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-section">
+          <div class="result-section-label label-desc">📄 Description</div>
+          <div class="result-desc-text">${escHtml(set.description || '')}</div>
+          <div class="char-indicator char-ok" style="margin-top:8px;">~${descWords} words</div>
+        </div>
+        ${analysis ? `<div class="analysis-bar">
+          <div class="analysis-title">Algorithm Check</div>
+          <div class="analysis-items">${analysis}</div>
+        </div>` : ''}
+      </div>
+    </div>`;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function copySet(i) {
+  const sets = document.querySelectorAll('.result-set');
+  if (!sets[i]) return;
+  const title = sets[i].querySelector('.result-title-text')?.textContent || '';
+  const desc = sets[i].querySelector('.result-desc-text')?.textContent || '';
+  const text = `TITLE:\n${title}\n\nDESCRIPTION:\n${desc}`;
+  await navigator.clipboard.writeText(text);
+  const btn = sets[i].querySelector('.copy-btn');
+  btn.textContent = '✓ Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy all'; btn.classList.remove('copied'); }, 2000);
+}
+
+async function copyAll() {
+  const sets = document.querySelectorAll('.result-set');
+  let all = '';
+  sets.forEach((s, i) => {
+    const title = s.querySelector('.result-title-text')?.textContent || '';
+    const desc = s.querySelector('.result-desc-text')?.textContent || '';
+    all += `--- VARIATION ${i+1} ---\nTITLE:\n${title}\n\nDESCRIPTION:\n${desc}\n\n`;
+  });
+  await navigator.clipboard.writeText(all.trim());
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorBox');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function hideError() {
+  document.getElementById('errorBox').classList.remove('show');
+}
+</script>
+
+<!-- Firebase Login -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDZF8BDVUwHXSZKFEu_NVsqT9sq_r1zoyo",
+  authDomain: "title-description-generator.firebaseapp.com",
+  projectId: "title-description-generator",
+  storageBucket: "title-description-generator.firebasestorage.app",
+  messagingSenderId: "676771333334",
+  appId: "1:676771333334:web:2ff6e5e73966dab8807577"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
+}
+
+function logout() {
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('loginBtn').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'flex';
+
+    document.getElementById('userName').textContent = user.displayName;
+    document.getElementById('userPic').src = user.photoURL;
+
+    document.getElementById('generateBtn').disabled = false;
+  } else {
+    document.getElementById('loginBtn').style.display = 'block';
+    document.getElementById('userInfo').style.display = 'none';
+
+    document.getElementById('generateBtn').disabled = true;
+  }
+});
+</script>
+</body>
+</html>
+
+
